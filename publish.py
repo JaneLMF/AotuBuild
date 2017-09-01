@@ -69,18 +69,26 @@ class ConfigUtil(object):
 		finally:
 			file_object.close()
 
+def make_zip(source_dir, output_filename):
+	zipf = zipfile.ZipFile(output_filename, 'w')
+	pre_len = len(os.path.dirname(source_dir))
+	for parent, dirnames, filenames in os.walk(source_dir):
+		for filename in filenames:
+		  pathfile = os.path.join(parent, filename)
+		  arcname = pathfile[pre_len:].strip(os.path.sep)   #相对路径
+		  zipf.write(pathfile, arcname)
+	zipf.close()
 
 def scanDir(upload_list):
 	for item in upload_list:
-		zipf = zipfile.ZipFile('publish.zip', 'w', zipfile.ZIP_DEFLATED)
-		zipf.write(item['local_path'])
-		zipf.close()
-		put('publish.zip', item['server_path'], use_sudo=True)
+		tmp_file = 'publish.zip'
+		make_zip(item['local_path'], tmp_file)
+		# put('publish.zip', item['server_path'], use_sudo=True)
+		put(tmp_file, item['server_path'])
 		with cd(item['server_path']):
-			run('pwd')
-			run('unzip publish.zip')
-			run('rm publish.zip')
-		os.remove('publish.zip')
+			run('unzip -o %s' % tmp_file)
+			run('rm %s' % tmp_file)
+		os.remove(tmp_file)
 
 def executCmd(cmds):
 	if not cmds:
