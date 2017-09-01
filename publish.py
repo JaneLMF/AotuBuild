@@ -116,7 +116,9 @@ def main():
 		beforPublish(config['befor_upload_cmd'])
 		scanDir(config['upload_list'])
 		afterPublished(config['after_upload_cmd'])
+		print '-' * 45
 		print 'PUBLISH SUCCESS SPEED TIME : %ss' % (time.time() - t)
+		print '-' * 45
 
 if __name__ == '__main__':
 	printAuthor()
