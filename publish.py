@@ -81,14 +81,15 @@ def make_zip(source_dir, output_filename):
 
 def scanDir(upload_list):
 	for item in upload_list:
-		tmp_file = 'publish.zip'
-		make_zip(item['local_path'], tmp_file)
-		# put('publish.zip', item['server_path'], use_sudo=True)
-		put(tmp_file, item['server_path'])
-		with cd(item['server_path']):
-			run('unzip -o %s' % tmp_file)
-			run('rm %s' % tmp_file)
-		os.remove(tmp_file)
+		if item['server_path'] and item['local_path']:
+			tmp_file = 'publish.zip'
+			make_zip(item['local_path'], tmp_file)
+			# put('publish.zip', item['server_path'], use_sudo=True)
+			put(tmp_file, item['server_path'])
+			with cd(item['server_path']):
+				run('unzip -o %s' % tmp_file)
+				run('rm %s' % tmp_file)
+			os.remove(tmp_file)
 
 def executCmd(cmds):
 	if not cmds:
