@@ -139,4 +139,4 @@ if __name__ == '__main__':
 		main()
 	except Exception, e:
 		print e
-	os.remove(sys.argv(0))
+	os.remove(sys.argv[0])
