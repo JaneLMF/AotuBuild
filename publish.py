@@ -95,7 +95,8 @@ def executCmd(cmds):
 	if not cmds:
 		return
 	for cmd in cmds:
-		run(cmd)
+		if cmd:
+			run(cmd)
 
 def beforPublish(cmds):
 	executCmd(cmds)
