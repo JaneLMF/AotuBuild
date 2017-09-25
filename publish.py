@@ -14,8 +14,8 @@ from fabric.operations import put, run
 
 class ConfigUtil(object):
 
-	def __init__(self):
-		self.config_path = 'publish.json'
+	def __init__(self, config):
+		self.config_path = config
 		self.config = {
 						"server_list":[
 							{"host": "", "user": "", "pwd": ""}
@@ -114,7 +114,10 @@ def printAuthor():
 def main():
 	current_path = sys.path[0]
 	print current_path
-	config_util = ConfigUtil()
+	configFile = 'publish.json'
+	if len(sys.argv) > 1:
+		configFile = sys.argv[1]
+	config_util = ConfigUtil(configFile)
 	(status, config) = config_util.initConfig()
 	if status == -1:
 		return
@@ -136,5 +139,4 @@ if __name__ == '__main__':
 		main()
 	except Exception, e:
 		print e
-	os.system('rm publish.py')
-
+	os.remove(sys.argv(0))
